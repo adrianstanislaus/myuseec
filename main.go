@@ -7,4 +7,6 @@ func main() {
 	fmt.Println("ini tulisan setelah stash")
 	fmt.Println("mau nyoba stash")
 	fmt.Println("coding di development")
+	fmt.Println("penasaran sama stash")
+
 }
