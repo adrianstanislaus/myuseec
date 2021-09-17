@@ -1,8 +1,7 @@
 package main
 
-import "fmt"
-
 func main() {
+<<<<<<< HEAD
 	fmt.Println("This is the MAIN code")
 	fmt.Println("This is the DEVELOPMENT code")
 <<<<<<< HEAD
@@ -12,4 +11,6 @@ func main() {
 >>>>>>> d610c17a2324f5c043659f86b89122e3e38aa93b
 	fmt.Println("This is the featureA code")
 	fmt.Println("This is another featureA code")
+=======
+>>>>>>> main
 }
