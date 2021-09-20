@@ -12,8 +12,8 @@ import (
 
 func GetAlbumsController(c echo.Context) error {
 	albums := []albums.Album{}
-
 	result := configs.DB.Find(&albums)
+
 	if result.Error != nil {
 		if result.Error != gorm.ErrRecordNotFound {
 			return c.JSON(http.StatusInternalServerError, response.BaseResponse{
