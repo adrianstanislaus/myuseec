@@ -2,6 +2,7 @@ package configs
 
 import (
 	"myuseek/models/albums"
+	"myuseek/models/users"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -20,5 +21,5 @@ func InitDB() {
 }
 
 func Migration() {
-	DB.AutoMigrate(&albums.Album{})
+	DB.AutoMigrate(&albums.Album{}, &users.User{})
 }

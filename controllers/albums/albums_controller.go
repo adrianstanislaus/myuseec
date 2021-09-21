@@ -1,4 +1,4 @@
-package controllers
+package album_controllers
 
 import (
 	"myuseek/configs"

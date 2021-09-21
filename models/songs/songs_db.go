@@ -1,4 +1,4 @@
-package Songs
+package songs
 
 import (
 	"time"
@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
+type Song struct {
 	Id           int            `gorm:"primaryKey" json:"id"`
 	Title        string         `json:"title"`
 	Artist_id    string         `json:"artist_id"`

@@ -1,4 +1,4 @@
-package Users
+package users
 
 type UserRegister struct {
 	FirstName         string `json:"firstname"`
