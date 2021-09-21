@@ -1,7 +1,7 @@
 package albums
 
 type Album_detail struct {
-	Id           int    `gorm:"primaryKey" json:"id"`
+	Id           int    `json:"id"`
 	Title        string `json:"title"`
 	Album_type   string `json:"album_type"`
 	About        string `json:"about"`
