@@ -22,14 +22,14 @@ func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
 func (uc *UserUsecase) Register(ctx context.Context, firstname, lastname, username, email, password, bio, profile_pic, subscription_type string) (Domain, error) {
 
 	if firstname == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("firstname empty")
 	}
 	if lastname == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("lastname empty")
 	}
 
 	if username == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("username empty")
 	}
 
 	if email == "" {
@@ -37,11 +37,11 @@ func (uc *UserUsecase) Register(ctx context.Context, firstname, lastname, userna
 	}
 
 	if password == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("password empty")
 	}
 
 	if subscription_type == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("subscription type empty")
 	}
 
 	user, err := uc.Repo.Register(ctx, firstname, lastname, username, email, password, bio, profile_pic, subscription_type)

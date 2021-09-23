@@ -18,13 +18,21 @@ func NewMysqlUserRepository(conn *gorm.DB) users.Repository {
 }
 
 func (rep *MysqlUserRepository) Register(ctx context.Context, firstname, lastname, username, email, password, bio, profile_pic, subscription_type string) (users.Domain, error) {
-	var user Users
-	result := rep.Conn.Create(&user)
+	var userDB Users
+	userDB.FirstName = firstname
+	userDB.LastName = lastname
+	userDB.Email = email
+	userDB.Password = password
+	userDB.Username = username
+	userDB.Bio = bio
+	userDB.Profile_pic = profile_pic
+	userDB.Subscription_type = subscription_type
+	result := rep.Conn.Create(&userDB)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error
 	}
 
-	return user.ToDomain(), nil
+	return userDB.ToDomain(), nil
 
 }
