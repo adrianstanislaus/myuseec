@@ -34,5 +34,17 @@ func (rep *MysqlUserRepository) Register(ctx context.Context, firstname, lastnam
 	}
 
 	return userDB.ToDomain(), nil
+}
+
+func (rep *MysqlUserRepository) Login(ctx context.Context, username, password string) (users.Domain, error) {
+	var user Users
+	result := rep.Conn.First(&user, "username = ? AND password = ?",
+		username, password)
+
+	if result.Error != nil {
+		return users.Domain{}, result.Error
+	}
+
+	return user.ToDomain(), nil
 
 }
