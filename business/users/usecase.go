@@ -55,7 +55,7 @@ func (uc *UserUsecase) Register(ctx context.Context, firstname, lastname, userna
 
 func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error) {
 
-	if domain.Email == "" {
+	if domain.Username == "" {
 		return Domain{}, errors.New("email empty")
 	}
 
@@ -69,7 +69,7 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 	// 	return Domain{}, err
 	// }
 
-	user, err := uc.Repo.Login(ctx, domain.Email, domain.Password)
+	user, err := uc.Repo.Login(ctx, domain.Username, domain.Password)
 
 	if err != nil {
 		return Domain{}, err
