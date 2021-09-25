@@ -34,3 +34,18 @@ func (userController UserController) Register(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
 }
+
+func (userController UserController) Login(c echo.Context) error {
+	fmt.Println("Login")
+	userLogin := requests.UserLogin{}
+	c.Bind(&userLogin)
+
+	ctx := c.Request().Context()
+	user, error := userController.UserUseCase.Login(ctx, userLogin.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+}
