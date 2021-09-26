@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.1.0
-	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.6.0
 	github.com/spf13/viper v1.9.0
 	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272

@@ -13,7 +13,7 @@ import (
 
 	"log"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
