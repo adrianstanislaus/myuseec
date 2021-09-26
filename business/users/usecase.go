@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"errors"
+	encrypt "myuseek/helpers/hashing"
 	"time"
 )
 
@@ -19,32 +20,36 @@ func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
 }
 
 //core business register
-func (uc *UserUsecase) Register(ctx context.Context, firstname, lastname, username, email, password, bio, profile_pic, subscription_type string) (Domain, error) {
+func (uc *UserUsecase) Register(ctx context.Context, domain Domain) (Domain, error) {
 
-	if firstname == "" {
+	if domain.FirstName == "" {
 		return Domain{}, errors.New("firstname empty")
 	}
-	if lastname == "" {
+	if domain.LastName == "" {
 		return Domain{}, errors.New("lastname empty")
 	}
 
-	if username == "" {
+	if domain.Username == "" {
 		return Domain{}, errors.New("username empty")
 	}
 
-	if email == "" {
+	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}
 
-	if password == "" {
+	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
 
-	if subscription_type == "" {
+	if domain.Subscription_type == "" {
 		return Domain{}, errors.New("subscription type empty")
 	}
 
-	user, err := uc.Repo.Register(ctx, firstname, lastname, username, email, password, bio, profile_pic, subscription_type)
+	//encryption
+	var err error
+	domain.Password, err = encrypt.Hash(domain.Password)
+
+	user, err := uc.Repo.Register(ctx, domain.FirstName, domain.LastName, domain.Username, domain.Email, domain.Password, domain.Bio, domain.Profile_pic, domain.Subscription_type)
 
 	if err != nil {
 		return Domain{}, err
@@ -62,12 +67,6 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
-	// var err error
-	// domain.Password, err = encrypt.Hash(domain.Password)
-
-	// if err != nil {
-	// 	return Domain{}, err
-	// }
 
 	user, err := uc.Repo.Login(ctx, domain.Username, domain.Password)
 
@@ -75,11 +74,10 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 		return Domain{}, err
 	}
 
-	// user.Token, err = uc.ConfigJWT.GenerateToken(user.Id)
-
-	if err != nil {
-		return Domain{}, err
+	if !(encrypt.CheckPasswordHash(domain.Password, user.Password)) {
+		return Domain{}, errors.New("wrong password")
 	}
 
+	// user.Token, err = uc.ConfigJWT.GenerateToken(user.Id)
 	return user, nil
 }
