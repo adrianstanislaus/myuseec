@@ -48,3 +48,16 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, username, password st
 	return user.ToDomain(), nil
 
 }
+
+func (rep *MysqlUserRepository) GetUsers(ctx context.Context) ([]users.Domain, error) {
+	userlist := []Users{}
+	result := rep.Conn.Find(&userlist)
+
+	if result.Error != nil {
+		userlistdomain := []users.Domain{}
+		return userlistdomain, result.Error
+	}
+	userlistdomain := ToListDomain(userlist)
+	return userlistdomain, nil
+
+}

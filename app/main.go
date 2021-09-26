@@ -1,6 +1,7 @@
 package main
 
 import (
+	_middlewares "myuseek/app/middlewares"
 	"myuseek/app/routes"
 	_userUsecase "myuseek/business/users"
 	_userController "myuseek/controller/users"
@@ -42,6 +43,11 @@ func main() {
 		DB_Database: viper.GetString(`database.name`),
 	}
 
+	configJWT := _middlewares.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
 	Conn := configDB.InitialDB()
 	DbMigrate(Conn)
 
@@ -49,10 +55,11 @@ func main() {
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	userRepository := _userRepository.NewMysqlUserRepository(Conn)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext)
+	userUseCase := _userUsecase.NewUserUsecase(configJWT, userRepository, timeoutContext)
 	userController := _userController.NewUserController(userUseCase)
 
 	routesInit := routes.ControllerList{
+		JwtConfig:      configJWT.Init(),
 		UserController: *userController,
 	}
 

@@ -49,3 +49,15 @@ func (userController UserController) Login(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
 }
+func (userController UserController) GetUsers(c echo.Context) error {
+	fmt.Println("GetUsers")
+
+	ctx := c.Request().Context()
+	userlistdomain, error := userController.UserUseCase.GetUsers(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(userlistdomain))
+}

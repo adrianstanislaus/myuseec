@@ -52,3 +52,11 @@ func FromDomain(domain users.Domain) Users {
 		CreatedAt:         domain.CreatedAt,
 		UpdatedAt:         domain.UpdatedAt}
 }
+
+func ToListDomain(data []Users) (result []users.Domain) {
+	result = []users.Domain{}
+	for _, user := range data {
+		result = append(result, user.ToDomain())
+	}
+	return result
+}

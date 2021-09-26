@@ -3,17 +3,20 @@ package users
 import (
 	"context"
 	"errors"
+	"myuseek/app/middlewares"
 	encrypt "myuseek/helpers/hashing"
 	"time"
 )
 
 type UserUsecase struct {
+	ConfigJWT      middlewares.ConfigJWT
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewUserUsecase(configJWT middlewares.ConfigJWT, repo Repository, timeout time.Duration) Usecase {
 	return &UserUsecase{
+		ConfigJWT:      configJWT,
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
@@ -78,6 +81,17 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 		return Domain{}, errors.New("wrong password")
 	}
 
-	// user.Token, err = uc.ConfigJWT.GenerateToken(user.Id)
+	user.Token, err = uc.ConfigJWT.GenerateToken(user.Id)
 	return user, nil
+}
+
+func (uc *UserUsecase) GetUsers(ctx context.Context) ([]Domain, error) {
+
+	userlistdomain, err := uc.Repo.GetUsers(ctx)
+
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return userlistdomain, nil
 }
