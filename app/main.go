@@ -5,11 +5,14 @@ import (
 	"myuseek/app/routes"
 	_userUsecase "myuseek/business/users"
 	_userController "myuseek/controller/users"
-	_userdb "myuseek/drivers/databases/users"
 	_mysqlDriver "myuseek/drivers/mysql"
 	"time"
 
 	_userRepository "myuseek/drivers/databases/users"
+
+	_artistUsecase "myuseek/business/artists"
+	_artistController "myuseek/controller/artists"
+	_artistRepository "myuseek/drivers/databases/artists"
 
 	"log"
 
@@ -30,7 +33,7 @@ func init() {
 }
 
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_userdb.Users{})
+	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{})
 }
 
 func main() {
@@ -57,10 +60,14 @@ func main() {
 	userRepository := _userRepository.NewMysqlUserRepository(Conn)
 	userUseCase := _userUsecase.NewUserUsecase(configJWT, userRepository, timeoutContext)
 	userController := _userController.NewUserController(userUseCase)
+	artistRepository := _artistRepository.NewMysqlArtistRepository(Conn)
+	artistUseCase := _artistUsecase.NewArtistUsecase(artistRepository, timeoutContext)
+	artistController := _artistController.NewArtistController(artistUseCase)
 
 	routesInit := routes.ControllerList{
-		JwtConfig:      configJWT.Init(),
-		UserController: *userController,
+		JwtConfig:        configJWT.Init(),
+		UserController:   *userController,
+		ArtistController: *artistController,
 	}
 
 	routesInit.RouteRegister(e)
