@@ -33,7 +33,7 @@ func (uc *ArtistUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 	}
 
 	if domain.Profile_pic == "" {
-		return Domain{}, errors.New("email empty")
+		return Domain{}, errors.New("profile pic empty")
 	}
 
 	artist, err := uc.Repo.Register(ctx, domain)
