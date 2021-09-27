@@ -14,6 +14,10 @@ import (
 	_artistController "myuseek/controller/artists"
 	_artistRepository "myuseek/drivers/databases/artists"
 
+	_songUsecase "myuseek/business/songs"
+	_songController "myuseek/controller/songs"
+	_songRepository "myuseek/drivers/databases/songs"
+
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -33,7 +37,7 @@ func init() {
 }
 
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{})
+	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{}, &_songRepository.Song{})
 }
 
 func main() {
@@ -63,11 +67,15 @@ func main() {
 	artistRepository := _artistRepository.NewMysqlArtistRepository(Conn)
 	artistUseCase := _artistUsecase.NewArtistUsecase(artistRepository, timeoutContext)
 	artistController := _artistController.NewArtistController(artistUseCase)
+	songRepository := _songRepository.NewMysqlSongRepository(Conn)
+	songUseCase := _songUsecase.NewSongUsecase(songRepository, timeoutContext)
+	songController := _songController.NewSongController(songUseCase)
 
 	routesInit := routes.ControllerList{
 		JwtConfig:        configJWT.Init(),
 		UserController:   *userController,
 		ArtistController: *artistController,
+		SongController:   *songController,
 	}
 
 	routesInit.RouteRegister(e)
