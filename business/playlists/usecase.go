@@ -43,11 +43,33 @@ func (uc *PlaylistUsecase) GetbyID(ctx context.Context, domain Domain) (Domain, 
 	}
 
 	playlistdomain, err := uc.Repo.GetbyID(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
 	if playlistdomain.Name == "" {
 		return Domain{}, errors.New("no playlist found with that ID")
 	}
+
+	return playlistdomain, nil
+}
+
+func (uc *PlaylistUsecase) AddSong(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Id == 0 {
+		return Domain{}, errors.New("id empty")
+	}
+	if len(domain.Songs) == 0 {
+		return Domain{}, errors.New("song_to_add empty")
+	}
+	playlistdomain, err := uc.Repo.AddSong(ctx, domain)
+
 	if err != nil {
 		return Domain{}, err
+	}
+
+	if playlistdomain.Name == "" {
+		return Domain{}, errors.New("no playlist found with that ID")
 	}
 
 	return playlistdomain, nil

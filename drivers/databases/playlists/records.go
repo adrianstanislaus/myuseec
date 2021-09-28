@@ -25,7 +25,7 @@ func (playlist *Playlist) ToDomain() playlists.Domain {
 		Name:        playlist.Name,
 		Description: playlist.Description,
 		Creator_id:  playlist.Creator_id,
-		Songs:       playlist.Songs,
+		Songs:       songs.ToListDomain(playlist.Songs),
 		CreatedAt:   playlist.CreatedAt,
 		UpdatedAt:   playlist.UpdatedAt,
 	}
@@ -37,7 +37,7 @@ func FromDomain(domain playlists.Domain) Playlist {
 		Name:        domain.Name,
 		Description: domain.Description,
 		Creator_id:  domain.Creator_id,
-		Songs:       domain.Songs,
+		Songs:       songs.FromListDomain(domain.Songs),
 		CreatedAt:   domain.CreatedAt,
 		UpdatedAt:   domain.UpdatedAt}
 }

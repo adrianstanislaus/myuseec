@@ -29,4 +29,5 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("playlists/create", cl.PlaylistController.Create, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("playlists", cl.PlaylistController.GetPlaylists, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("playlists/:id", cl.PlaylistController.GetbyID, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("playlists/:id/addsong", cl.PlaylistController.AddSong, middleware.JWTWithConfig(cl.JwtConfig))
 }
