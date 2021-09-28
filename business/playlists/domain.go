@@ -10,8 +10,9 @@ type Domain struct {
 	Name        string
 	Description string
 	Creator_id  int
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	//dummy
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type Usecase interface {
