@@ -28,6 +28,18 @@ func (rep *MysqlPlaylistRepository) Create(ctx context.Context, domain playlists
 	return playlistDB.ToDomain(), nil
 }
 
+func (rep *MysqlPlaylistRepository) GetbyID(ctx context.Context, domain playlists.Domain) (playlists.Domain, error) {
+	playlist := Playlist{}
+	result := rep.Conn.Find(&playlist, domain.Id)
+
+	if result.Error != nil {
+		playlistdomain := playlists.Domain{}
+		return playlistdomain, result.Error
+	}
+	playlistdomain := playlist.ToDomain()
+	return playlistdomain, nil
+
+}
 func (rep *MysqlPlaylistRepository) GetPlaylists(ctx context.Context) ([]playlists.Domain, error) {
 	playlistlist := []Playlist{}
 	result := rep.Conn.Find(&playlistlist)

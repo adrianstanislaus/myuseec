@@ -2,7 +2,6 @@ package songs
 
 import (
 	"myuseek/business/songs"
-	"myuseek/drivers/databases/playlists"
 	"time"
 
 	"gorm.io/gorm"
@@ -16,7 +15,6 @@ type Song struct {
 	Genre     string
 	Duration  string
 	Lyrics    string
-	Playlists []playlists.Playlist `gorm:"many2many:playlist_details;"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`

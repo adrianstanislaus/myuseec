@@ -2,6 +2,7 @@ package playlists
 
 import (
 	"myuseek/business/playlists"
+	"myuseek/drivers/databases/songs"
 	"time"
 
 	"gorm.io/gorm"
@@ -12,6 +13,7 @@ type Playlist struct {
 	Name        string
 	Description string
 	Creator_id  int
+	Songs       []songs.Song `gorm:"many2many:playlist_details;"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
@@ -23,6 +25,7 @@ func (playlist *Playlist) ToDomain() playlists.Domain {
 		Name:        playlist.Name,
 		Description: playlist.Description,
 		Creator_id:  playlist.Creator_id,
+		Songs:       playlist.Songs,
 		CreatedAt:   playlist.CreatedAt,
 		UpdatedAt:   playlist.UpdatedAt,
 	}
@@ -34,6 +37,7 @@ func FromDomain(domain playlists.Domain) Playlist {
 		Name:        domain.Name,
 		Description: domain.Description,
 		Creator_id:  domain.Creator_id,
+		Songs:       domain.Songs,
 		CreatedAt:   domain.CreatedAt,
 		UpdatedAt:   domain.UpdatedAt}
 }
