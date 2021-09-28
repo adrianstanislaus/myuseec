@@ -2,6 +2,7 @@ package routes
 
 import (
 	"myuseek/controller/artists"
+	"myuseek/controller/playlists"
 	"myuseek/controller/songs"
 	"myuseek/controller/users"
 
@@ -10,10 +11,11 @@ import (
 )
 
 type ControllerList struct {
-	JwtConfig        middleware.JWTConfig
-	UserController   users.UserController
-	ArtistController artists.ArtistController
-	SongController   songs.SongController
+	JwtConfig          middleware.JWTConfig
+	UserController     users.UserController
+	ArtistController   artists.ArtistController
+	SongController     songs.SongController
+	PlaylistController playlists.PlaylistController
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
@@ -24,4 +26,6 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("artists", cl.ArtistController.GetArtists, middleware.JWTWithConfig(cl.JwtConfig))
 	e.POST("songs/add", cl.SongController.Add, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("songs", cl.SongController.GetSongs, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("playlists/create", cl.PlaylistController.Create, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("playlists", cl.PlaylistController.GetPlaylists, middleware.JWTWithConfig(cl.JwtConfig))
 }

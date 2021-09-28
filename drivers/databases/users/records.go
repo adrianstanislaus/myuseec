@@ -2,6 +2,7 @@ package users
 
 import (
 	"myuseek/business/users"
+	"myuseek/drivers/databases/playlists"
 	"time"
 
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type Users struct {
 	Bio               string
 	Profile_pic       string
 	Subscription_type string
+	Playlists         []playlists.Playlist `gorm:"foreignKey:Creator_id"`
 	CreatedAt         time.Time
 	UpdatedAt         time.Time
 	DeletedAt         gorm.DeletedAt `gorm:"index"`

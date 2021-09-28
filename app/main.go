@@ -18,6 +18,10 @@ import (
 	_songController "myuseek/controller/songs"
 	_songRepository "myuseek/drivers/databases/songs"
 
+	_playlistUsecase "myuseek/business/playlists"
+	_playlistController "myuseek/controller/playlists"
+	_playlistRepository "myuseek/drivers/databases/playlists"
+
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -70,12 +74,16 @@ func main() {
 	songRepository := _songRepository.NewMysqlSongRepository(Conn)
 	songUseCase := _songUsecase.NewSongUsecase(songRepository, timeoutContext)
 	songController := _songController.NewSongController(songUseCase)
+	playlistRepository := _playlistRepository.NewMysqlPlaylistRepository(Conn)
+	playlistUseCase := _playlistUsecase.NewPlaylistUsecase(playlistRepository, timeoutContext)
+	playlistController := _playlistController.NewPlaylistController(playlistUseCase)
 
 	routesInit := routes.ControllerList{
-		JwtConfig:        configJWT.Init(),
-		UserController:   *userController,
-		ArtistController: *artistController,
-		SongController:   *songController,
+		JwtConfig:          configJWT.Init(),
+		UserController:     *userController,
+		ArtistController:   *artistController,
+		SongController:     *songController,
+		PlaylistController: *playlistController,
 	}
 
 	routesInit.RouteRegister(e)
