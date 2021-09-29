@@ -2,21 +2,19 @@ package songs
 
 import (
 	"myuseek/business/songs"
-	"myuseek/drivers/databases/playlists"
 	"time"
 
 	"gorm.io/gorm"
 )
 
 type Song struct {
-	Id        int `gorm:"primaryKey"`
-	Title     string
-	Artist_id int
+	Id        int    `gorm:"primaryKey"`
+	Title     string `gorm:"uniqueIndex:idx_song;size:255"`
+	Artist_id int    `gorm:"uniqueIndex:idx_song;type:BIGINT(255)"`
 	Album_id  int
 	Genre     string
 	Duration  string
 	Lyrics    string
-	Playlists []playlists.Playlist `gorm:"many2many:playlist_details;"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -53,6 +51,14 @@ func ToListDomain(data []Song) (result []songs.Domain) {
 	result = []songs.Domain{}
 	for _, song := range data {
 		result = append(result, song.ToDomain())
+	}
+	return result
+}
+
+func FromListDomain(data []songs.Domain) (result []Song) {
+	result = []Song{}
+	for _, song := range data {
+		result = append(result, FromDomain(song))
 	}
 	return result
 }
