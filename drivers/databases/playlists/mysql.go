@@ -31,7 +31,7 @@ func (rep *MysqlPlaylistRepository) Create(ctx context.Context, domain playlists
 
 func (rep *MysqlPlaylistRepository) GetbyID(ctx context.Context, domain playlists.Domain) (playlists.Domain, error) {
 	playlist := Playlist{}
-	result := rep.Conn.Find(&playlist, domain.Id)
+	result := rep.Conn.Preload("Songs").Find(&playlist, domain.Id)
 
 	if result.Error != nil {
 		playlistdomain := playlists.Domain{}
