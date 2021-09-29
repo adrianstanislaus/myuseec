@@ -42,13 +42,21 @@ func (rep *MysqlSongRepository) GetSongs(ctx context.Context) ([]songs.Domain, e
 }
 
 func (rep *MysqlSongRepository) GetSongById(ctx context.Context, domain songs.Domain) (songs.Domain, error) {
-	song := Song{}
-	result := rep.Conn.Find(&song, domain.Id)
+	song := FromDomain(domain)
+	artist := Artist{}
+	result := rep.Conn.Find(&song)
+	result_artist := rep.Conn.Find(&artist, song.Artist_id)
 
 	if result.Error != nil {
 		songdomain := songs.Domain{}
 		return songdomain, result.Error
 	}
+
+	if result_artist.Error != nil {
+		songdomain := songs.Domain{}
+		return songdomain, result_artist.Error
+	}
+	song.Artist = artist
 	songdomain := song.ToDomain()
 	return songdomain, nil
 
