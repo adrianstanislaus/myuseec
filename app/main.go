@@ -41,7 +41,7 @@ func init() {
 }
 
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{}, &_songRepository.Song{})
+	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{}, &_songRepository.Song{}, &_playlistRepository.Playlist{})
 }
 
 func main() {

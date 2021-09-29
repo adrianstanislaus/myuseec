@@ -7,6 +7,7 @@ import (
 	"myuseek/controller/songs/requests"
 	"myuseek/controller/songs/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -46,4 +47,25 @@ func (songController SongController) GetSongs(c echo.Context) error {
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromListDomain(songlistdomain))
+}
+
+func (songController SongController) GetSongById(c echo.Context) error {
+	fmt.Println("GetSong by ID")
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	songByID := requests.SongByID{}
+	songByID.Id = id
+	ctx := c.Request().Context()
+	songdomain, error := songController.SongUseCase.GetSongById(ctx, songByID.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomain(songdomain))
 }
