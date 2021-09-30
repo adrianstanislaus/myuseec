@@ -69,3 +69,24 @@ func (songController SongController) GetSongById(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(songdomain))
 }
+
+func (songController SongController) GetSongLyrics(c echo.Context) error {
+	fmt.Println("GetSongLyrics")
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	songByID := requests.SongByID{}
+	songByID.Id = id
+	ctx := c.Request().Context()
+	songdomain, error := songController.SongUseCase.GetSongLyrics(ctx, songByID.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomain(songdomain))
+}
