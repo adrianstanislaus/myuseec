@@ -25,6 +25,7 @@ func (cl *ControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("users/:id", cl.UserController.GetUserById, middleware.JWTWithConfig(cl.JwtConfig))
 	e.POST("artists/register", cl.ArtistController.Register, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("artists", cl.ArtistController.GetArtists, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("artists/:id", cl.ArtistController.GetArtistById, middleware.JWTWithConfig(cl.JwtConfig))
 	e.POST("songs/add", cl.SongController.Add, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("songs", cl.SongController.GetSongs, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("songs/:id", cl.SongController.GetSongById, middleware.JWTWithConfig(cl.JwtConfig))
