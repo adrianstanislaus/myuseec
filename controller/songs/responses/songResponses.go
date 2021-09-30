@@ -9,8 +9,7 @@ import (
 type SongResponse struct {
 	Id        int    `json:"id"`
 	Title     string `json:"title"`
-	Artist_id int    `json:"artist_id"`
-	Artist    responses.ArtistResponse
+	Artist    responses.GetArtistsResponse
 	Album_id  int       `json:"album_id"`
 	Genre     string    `json:"genre"`
 	Duration  string    `json:"duration"`
@@ -23,8 +22,7 @@ func FromDomain(domain songs.Domain) SongResponse {
 	return SongResponse{
 		Id:        domain.Id,
 		Title:     domain.Title,
-		Artist_id: domain.Artist_id,
-		Artist:    responses.FromDomain(domain.Artist),
+		Artist:    responses.FromDomainToGetArtists(domain.Artist),
 		Album_id:  domain.Album_id,
 		Genre:     domain.Genre,
 		Duration:  domain.Duration,
