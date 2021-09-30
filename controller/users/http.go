@@ -7,6 +7,7 @@ import (
 	"myuseek/controller/users/requests"
 	"myuseek/controller/users/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -32,7 +33,7 @@ func (userController UserController) Register(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainToRegister(user))
 }
 
 func (userController UserController) Login(c echo.Context) error {
@@ -47,7 +48,7 @@ func (userController UserController) Login(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainToLogin(user))
 }
 func (userController UserController) GetUsers(c echo.Context) error {
 	fmt.Println("GetUsers")
@@ -59,5 +60,26 @@ func (userController UserController) GetUsers(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromListDomain(userlistdomain))
+	return controllers.NewSuccesResponse(c, responses.FromListDomainToGetUsers(userlistdomain))
+}
+
+func (userController UserController) GetUserById(c echo.Context) error {
+	fmt.Println("Get User by ID")
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	userById := requests.UserByID{}
+	userById.Id = id
+	ctx := c.Request().Context()
+	userdomain, error := userController.UserUseCase.GetUserById(ctx, userById.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomainToGetUserById(userdomain))
 }

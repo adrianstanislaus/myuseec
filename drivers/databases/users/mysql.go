@@ -61,3 +61,16 @@ func (rep *MysqlUserRepository) GetUsers(ctx context.Context) ([]users.Domain, e
 	return userlistdomain, nil
 
 }
+
+func (rep *MysqlUserRepository) GetUserById(ctx context.Context, domain users.Domain) (users.Domain, error) {
+	user := Users{}
+	result := rep.Conn.Find(&user, domain.Id)
+
+	if result.Error != nil {
+		userdomain := users.Domain{}
+		return userdomain, result.Error
+	}
+	userdomain := user.ToDomain()
+	return userdomain, nil
+
+}

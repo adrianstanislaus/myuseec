@@ -52,6 +52,10 @@ func (uc *UserUsecase) Register(ctx context.Context, domain Domain) (Domain, err
 	var err error
 	domain.Password, err = encrypt.Hash(domain.Password)
 
+	if err != nil {
+		return Domain{}, err
+	}
+
 	user, err := uc.Repo.Register(ctx, domain.FirstName, domain.LastName, domain.Username, domain.Email, domain.Password, domain.Bio, domain.Profile_pic, domain.Subscription_type)
 
 	if err != nil {
@@ -82,6 +86,11 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 	}
 
 	user.Token, err = uc.ConfigJWT.GenerateToken(user.Id)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
 	return user, nil
 }
 
@@ -94,4 +103,21 @@ func (uc *UserUsecase) GetUsers(ctx context.Context) ([]Domain, error) {
 	}
 
 	return userlistdomain, nil
+}
+
+func (uc *UserUsecase) GetUserById(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Id == 0 {
+		return Domain{}, errors.New("id empty")
+	}
+	userdomain, err := uc.Repo.GetUserById(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	if userdomain.Username == "" {
+		return Domain{}, errors.New("no user found with that ID")
+	}
+
+	return userdomain, nil
 }

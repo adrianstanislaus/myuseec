@@ -73,3 +73,21 @@ func (uc *SongUsecase) GetSongById(ctx context.Context, domain Domain) (Domain, 
 
 	return songdomain, nil
 }
+
+func (uc *SongUsecase) GetSongLyrics(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Id == 0 {
+		return Domain{}, errors.New("id empty")
+	}
+
+	songdomain, err := uc.Repo.GetSongLyrics(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	if songdomain.Title == "" {
+		return Domain{}, errors.New("no song found with that ID")
+	}
+
+	return songdomain, nil
+}
