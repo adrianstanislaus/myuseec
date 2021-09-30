@@ -46,7 +46,7 @@ func (songController SongController) GetSongs(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromListDomain(songlistdomain))
+	return controllers.NewSuccesResponse(c, responses.FromListDomainToGetSongs(songlistdomain))
 }
 
 func (songController SongController) GetSongById(c echo.Context) error {
@@ -67,7 +67,7 @@ func (songController SongController) GetSongById(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(songdomain))
+	return controllers.NewSuccesResponse(c, responses.FromDomainToGetSongById(songdomain))
 }
 
 func (songController SongController) GetSongLyrics(c echo.Context) error {
@@ -88,5 +88,5 @@ func (songController SongController) GetSongLyrics(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(songdomain))
+	return controllers.NewSuccesResponse(c, responses.FromDomainToGetSongLyrics(songdomain))
 }
