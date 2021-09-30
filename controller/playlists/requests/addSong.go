@@ -6,8 +6,8 @@ import (
 )
 
 type NewSong struct {
-	Id        int          `json:"id"`
-	SongToAdd songs.Domain `json:"songtoadd"`
+	Id        int          `json:"song_id"`
+	SongToAdd songs.Domain `json:"song"`
 }
 
 func (song *NewSong) ToDomain() playlists.Domain {

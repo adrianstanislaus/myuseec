@@ -47,10 +47,16 @@ func (rep *MysqlPlaylistRepository) AddSong(ctx context.Context, domain playlist
 	playlist.Id = domain.Id
 	song := songs.FromListDomain(domain.Songs)
 	errorDb := rep.Conn.Model(&playlist).Where("id = ?", domain.Id).Association("Songs").Append(song)
+	errorDbsong := rep.Conn.Model(&playlist).Where("id = ?", domain.Id).Association("Songs").Find(&song)
 
 	if errorDb != nil {
 		playlistdomain := playlists.Domain{}
 		return playlistdomain, errorDb
+	}
+
+	if errorDbsong != nil {
+		playlistdomain := playlists.Domain{}
+		return playlistdomain, errorDbsong
 	}
 
 	result := rep.Conn.Find(&playlist, domain.Id)
@@ -59,6 +65,7 @@ func (rep *MysqlPlaylistRepository) AddSong(ctx context.Context, domain playlist
 		playlistdomain := playlists.Domain{}
 		return playlistdomain, result.Error
 	}
+	playlist.Songs = song
 	playlistdomain := playlist.ToDomain()
 	return playlistdomain, nil
 

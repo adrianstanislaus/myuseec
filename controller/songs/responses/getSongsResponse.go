@@ -24,10 +24,10 @@ func FromDomainToGetSongs(domain songs.Domain) GetSongsResponse {
 		Duration: domain.Duration}
 }
 
-func FromListDomainToGetSongs(data []songs.Domain) (result []SongResponse) {
-	result = []SongResponse{}
+func FromListDomainToGetSongs(data []songs.Domain) (result []GetSongsResponse) {
+	result = []GetSongsResponse{}
 	for _, song := range data {
-		result = append(result, FromDomain(song))
+		result = append(result, FromDomainToGetSongs(song))
 	}
 	return result
 }
