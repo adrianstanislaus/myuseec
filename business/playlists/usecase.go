@@ -72,6 +72,34 @@ func (uc *PlaylistUsecase) AddSong(ctx context.Context, domain Domain) (Domain, 
 		return Domain{}, errors.New("no playlist found with that ID")
 	}
 
+	if len(playlistdomain.Songs) == 0 {
+		return Domain{}, errors.New("song not found in playlist")
+	}
+
+	return playlistdomain, nil
+}
+
+func (uc *PlaylistUsecase) RemoveSong(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Id == 0 {
+		return Domain{}, errors.New("id empty")
+	}
+	if len(domain.Songs) == 0 {
+		return Domain{}, errors.New("song_to_remove empty")
+	}
+	playlistdomain, err := uc.Repo.RemoveSong(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	if playlistdomain.Name == "" {
+		return Domain{}, errors.New("no playlist found with that ID")
+	}
+
+	if len(playlistdomain.Songs) == 0 {
+		return Domain{}, errors.New("song not found in playlist")
+	}
+
 	return playlistdomain, nil
 }
 

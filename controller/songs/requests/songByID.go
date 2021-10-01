@@ -3,7 +3,7 @@ package requests
 import "myuseek/business/songs"
 
 type SongByID struct {
-	Id int `json:"id"`
+	Id int `json:"song_id"`
 }
 
 func (song *SongByID) ToDomain() songs.Domain {

@@ -6,10 +6,10 @@ import (
 )
 
 type PlaylistResponse struct {
-	Name        string                       `json:"name"`
-	Description string                       `json:"description"`
-	Creator_id  int                          `json:"creator_id"`
-	Songs       []responses.GetSongsResponse `json:"songs"`
+	Name        string                              `json:"name"`
+	Description string                              `json:"description"`
+	Creator_id  int                                 `json:"creator_id"`
+	Songs       []responses.SongsInPlaylistResponse `json:"songs"`
 }
 
 func FromDomain(domain playlists.Domain) PlaylistResponse {
@@ -17,7 +17,7 @@ func FromDomain(domain playlists.Domain) PlaylistResponse {
 		Name:        domain.Name,
 		Description: domain.Description,
 		Creator_id:  domain.Creator_id,
-		Songs:       responses.FromListDomainToGetSongs(domain.Songs),
+		Songs:       responses.FromListDomainToPlaylistSongs(domain.Songs),
 	}
 }
 

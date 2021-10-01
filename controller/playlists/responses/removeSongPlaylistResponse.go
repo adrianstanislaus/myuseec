@@ -5,14 +5,14 @@ import (
 	"myuseek/controller/songs/responses"
 )
 
-type AddSongPlaylistResponse struct {
+type RemoveSongPlaylistResponse struct {
 	Name       string                              `json:"name"`
 	Creator_id int                                 `json:"creator_id"`
-	Songs      []responses.SongsInPlaylistResponse `json:"added_song"`
+	Songs      []responses.SongsInPlaylistResponse `json:"removed_song"`
 }
 
-func FromDomainToAddSong(domain playlists.Domain) AddSongPlaylistResponse {
-	return AddSongPlaylistResponse{
+func FromDomainToRemoveSong(domain playlists.Domain) RemoveSongPlaylistResponse {
+	return RemoveSongPlaylistResponse{
 		Name:       domain.Name,
 		Creator_id: domain.Creator_id,
 		Songs:      responses.FromListDomainToPlaylistSongs(domain.Songs),

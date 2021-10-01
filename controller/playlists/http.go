@@ -47,7 +47,7 @@ func (playlistController PlaylistController) AddSong(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 	//binding song
-	songtoadd := requests.NewSong{}
+	songtoadd := requests.SongChoosePlaylist{}
 	c.Bind(&songtoadd)
 
 	songtoadd.Id = id
@@ -59,6 +59,30 @@ func (playlistController PlaylistController) AddSong(c echo.Context) error {
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToAddSong(playlistdomain))
+}
+
+func (playlistController PlaylistController) RemoveSong(c echo.Context) error {
+	fmt.Println("AddSong to playlist")
+	//specify playlist id
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	//binding song
+	songtoremove := requests.SongChoosePlaylist{}
+	c.Bind(&songtoremove)
+
+	songtoremove.Id = id
+	ctx := c.Request().Context()
+	playlistdomain, error := playlistController.PlaylistUseCase.RemoveSong(ctx, songtoremove.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomainToRemoveSong(playlistdomain))
 }
 
 func (playlistController PlaylistController) GetbyID(c echo.Context) error {
