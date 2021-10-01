@@ -20,6 +20,7 @@ type Usecase interface {
 	Create(ctx context.Context, domain Domain) (Domain, error)
 	GetbyID(ctx context.Context, domain Domain) (Domain, error)
 	AddSong(ctx context.Context, domain Domain) (Domain, error)
+	RemoveSong(ctx context.Context, domain Domain) (Domain, error)
 	GetPlaylists(ctx context.Context) ([]Domain, error)
 }
 
@@ -27,5 +28,6 @@ type Repository interface {
 	Create(ctx context.Context, domain Domain) (Domain, error)
 	GetbyID(ctx context.Context, domain Domain) (Domain, error)
 	AddSong(ctx context.Context, domain Domain) (Domain, error)
+	RemoveSong(ctx context.Context, domain Domain) (Domain, error)
 	GetPlaylists(ctx context.Context) ([]Domain, error)
 }
