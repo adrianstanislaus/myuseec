@@ -2,6 +2,7 @@ package artists
 
 import (
 	"myuseek/business/artists"
+	"myuseek/drivers/databases/albums"
 	"myuseek/drivers/databases/songs"
 	"time"
 
@@ -14,7 +15,8 @@ type Artist struct {
 	About        string
 	Record_label string
 	Profile_pic  string
-	Songs        []songs.Song `gorm:"foreignKey:Artist_id"`
+	Songs        []songs.Song   `gorm:"foreignKey:Artist_id"`
+	Albums       []albums.Album `gorm:"foreignKey:Artist_id"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt `gorm:"index"`

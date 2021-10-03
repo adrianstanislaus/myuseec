@@ -22,6 +22,10 @@ import (
 	_playlistController "myuseek/controller/playlists"
 	_playlistRepository "myuseek/drivers/databases/playlists"
 
+	_albumUsecase "myuseek/business/albums"
+	_albumController "myuseek/controller/albums"
+	_albumRepository "myuseek/drivers/databases/albums"
+
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -41,7 +45,7 @@ func init() {
 }
 
 func DbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{}, &_songRepository.Song{}, &_playlistRepository.Playlist{})
+	db.AutoMigrate(&_userRepository.Users{}, &_artistRepository.Artist{}, &_songRepository.Song{}, &_playlistRepository.Playlist{}, &_albumRepository.Album{})
 }
 
 func main() {
@@ -77,6 +81,9 @@ func main() {
 	playlistRepository := _playlistRepository.NewMysqlPlaylistRepository(Conn)
 	playlistUseCase := _playlistUsecase.NewPlaylistUsecase(playlistRepository, timeoutContext)
 	playlistController := _playlistController.NewPlaylistController(playlistUseCase)
+	albumRepository := _albumRepository.NewMysqlAlbumRepository(Conn)
+	albumUseCase := _albumUsecase.NewAlbumUsecase(albumRepository, timeoutContext)
+	albumController := _albumController.NewAlbumController(albumUseCase)
 
 	routesInit := routes.ControllerList{
 		JwtConfig:          configJWT.Init(),
@@ -84,6 +91,7 @@ func main() {
 		ArtistController:   *artistController,
 		SongController:     *songController,
 		PlaylistController: *playlistController,
+		AlbumController:    *albumController,
 	}
 
 	routesInit.RouteRegister(e)

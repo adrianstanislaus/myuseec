@@ -13,9 +13,10 @@ type GetUsersResponse struct {
 
 func FromDomainToGetUsers(domain users.Domain) GetUsersResponse {
 	return GetUsersResponse{
-		Id:       domain.Id,
-		Username: domain.Username,
-		Email:    domain.Email,
+		Id:          domain.Id,
+		Username:    domain.Username,
+		Email:       domain.Email,
+		Profile_pic: domain.Profile_pic,
 	}
 }
 
