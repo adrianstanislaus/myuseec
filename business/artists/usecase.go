@@ -55,3 +55,20 @@ func (uc *ArtistUsecase) GetArtists(ctx context.Context) ([]Domain, error) {
 
 	return artistlistdomain, nil
 }
+
+func (uc *ArtistUsecase) GetArtistById(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Id == 0 {
+		return Domain{}, errors.New("id empty")
+	}
+	artistdomain, err := uc.Repo.GetArtistById(ctx, domain)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	if artistdomain.Name == "" {
+		return Domain{}, errors.New("no Artist found with that ID")
+	}
+
+	return artistdomain, nil
+}

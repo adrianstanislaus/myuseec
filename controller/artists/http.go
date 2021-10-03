@@ -7,6 +7,7 @@ import (
 	"myuseek/controller/artists/requests"
 	"myuseek/controller/artists/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -45,5 +46,26 @@ func (artistController ArtistController) GetArtists(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromListDomain(artistlistdomain))
+	return controllers.NewSuccesResponse(c, responses.FromListDomainToGetArtists(artistlistdomain))
+}
+
+func (artistController ArtistController) GetArtistById(c echo.Context) error {
+	fmt.Println("Get Artist by ID")
+	paramId := c.Param("id")
+	id, err := strconv.Atoi(paramId)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	artistById := requests.ArtistByID{}
+	artistById.Id = id
+	ctx := c.Request().Context()
+	userdomain, error := artistController.ArtistUseCase.GetArtistById(ctx, artistById.ToDomain())
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomainToGetArtistById(userdomain))
 }

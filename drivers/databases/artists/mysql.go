@@ -40,3 +40,16 @@ func (rep *MysqlArtistRepository) GetArtists(ctx context.Context) ([]artists.Dom
 	return artistlistdomain, nil
 
 }
+
+func (rep *MysqlArtistRepository) GetArtistById(ctx context.Context, domain artists.Domain) (artists.Domain, error) {
+	artist := Artist{}
+	result := rep.Conn.Find(&artist, domain.Id)
+
+	if result.Error != nil {
+		artistdomain := artists.Domain{}
+		return artistdomain, result.Error
+	}
+	artistdomain := artist.ToDomain()
+	return artistdomain, nil
+
+}
