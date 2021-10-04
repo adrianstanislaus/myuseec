@@ -30,7 +30,7 @@ func setup() {
 		LastName:          "Stanislaus",
 		Username:          "adrian_sts",
 		Email:             "adrian@gmail.com",
-		Password:          "abc123",
+		Password:          "$2a$12$vAr7enV44Uu/8R8fW6VQdeC3r/4UjpagXsj2r0bCatAjNUNpPUnkW",
 		Bio:               "human being",
 		Profile_pic:       "link.com",
 		Subscription_type: "Premium",
@@ -41,8 +41,6 @@ func setup() {
 }
 
 func TestRegister(t *testing.T) {
-	// t.Error("4 + 5 Harusnya 9")
-	// assert.Equal(t, 2, 1)
 	setup()
 	userRepository.On("Register",
 		mock.Anything,
@@ -68,21 +66,110 @@ func TestRegister(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	// t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
+	t.Run("Test Case 2 | Invalid Register - FirstName Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "",
+			LastName:          "Stanislaus",
+			Username:          "adrian_sts",
+			Email:             "adrian@gmail.com",
+			Password:          "abc123",
+			Subscription_type: "Premium",
+		})
+		assert.NotNil(t, err)
+	})
 
-	// 	_, err := userService.Login(context.Background(), users.Domain{
-	// 		Email:    "",
-	// 		Password: "123",
-	// 	})
-	// 	assert.NotNil(t, err)
-	// })
+	t.Run("Test Case 3 | Invalid Register - LastName Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "Adrian",
+			LastName:          "",
+			Username:          "adrian_sts",
+			Email:             "adrian@gmail.com",
+			Password:          "abc123",
+			Subscription_type: "Premium",
+		})
+		assert.NotNil(t, err)
+	})
 
-	// t.Run("Test Case 3 | Invalid Password Empty", func(t *testing.T) {
+	t.Run("Test Case 4 | Invalid Register - Username Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "Adrian",
+			LastName:          "Stanislaus",
+			Username:          "",
+			Email:             "adrian@gmail.com",
+			Password:          "abc123",
+			Subscription_type: "Premium",
+		})
+		assert.NotNil(t, err)
+	})
 
-	// 	_, err := userService.Login(context.Background(), users.Domain{
-	// 		Email:    "alterra@gmail.com",
-	// 		Password: "",
-	// 	})
-	// 	assert.NotNil(t, err)
-	// })
+	t.Run("Test Case 5 | Invalid Register - Email Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "Adrian",
+			LastName:          "Stanislaus",
+			Username:          "adrian_sts",
+			Email:             "",
+			Password:          "abc123",
+			Subscription_type: "Premium",
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 6 | Invalid Register - Password Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "Adrian",
+			LastName:          "Stanislaus",
+			Username:          "adrian_sts",
+			Email:             "adrian@gmail.com",
+			Password:          "",
+			Subscription_type: "Premium",
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 7 | Invalid Register - Subscription_type Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			FirstName:         "Adrian",
+			LastName:          "Stanislaus",
+			Username:          "adrian_sts",
+			Email:             "adrian@gmail.com",
+			Password:          "123",
+			Subscription_type: "",
+		})
+		assert.NotNil(t, err)
+	})
+
+}
+
+func TestLogin(t *testing.T) {
+	setup()
+	userRepository.On("Login",
+		mock.Anything,
+		mock.AnythingOfType("string"),
+		mock.AnythingOfType("string"),
+	).Return(userDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid Login", func(t *testing.T) {
+		_, err := userService.Login(context.Background(), users.Domain{
+			Username: "adrian_sts",
+			Password: "abc123",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid Login - Username Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			Username: "",
+			Password: "abc123",
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 3 | Invalid Login - Password Empty", func(t *testing.T) {
+		_, err := userService.Register(context.Background(), users.Domain{
+			Username: "adrian_sts",
+			Password: "",
+		})
+		assert.NotNil(t, err)
+	})
+
 }
