@@ -1,4 +1,4 @@
-name: Running Unit Test
+name: Running Unit Test, Build image & container, Run in EC2
 
 on:
   pull_request:
@@ -56,6 +56,7 @@ jobs:
           Host development
             HostName $SSH_HOST
             User $SSH_USER
+            Port 22
             IdentityFile ~/.ssh/aws-adrian.pem
             StrictHostKeyChecking=no
           END
