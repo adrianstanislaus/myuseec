@@ -24,7 +24,7 @@ func setup() {
 		Id:          1,
 		Name:        "Judul Playlist",
 		Description: "Deskripsi playlist",
-		Songs:       []songs.Domain{},
+		Songs:       []songs.Domain{{Id: 1}},
 		Creator_id:  1,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
