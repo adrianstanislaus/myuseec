@@ -16,6 +16,7 @@ var userRepository _mockUserRepository.Repository
 
 var userService users.Usecase
 var userDomain users.Domain
+var userlistDomain []users.Domain
 
 var configJWT = _middlewares.ConfigJWT{
 	SecretJWT:       "123",
@@ -37,6 +38,20 @@ func setup() {
 		Token:             "123",
 		CreatedAt:         time.Now(),
 		UpdatedAt:         time.Now(),
+	}
+	userlistDomain = []users.Domain{{
+		Id:                1,
+		FirstName:         "Adrian",
+		LastName:          "Stanislaus",
+		Username:          "adrian_sts",
+		Email:             "adrian@gmail.com",
+		Password:          "$2a$12$vAr7enV44Uu/8R8fW6VQdeC3r/4UjpagXsj2r0bCatAjNUNpPUnkW",
+		Bio:               "human being",
+		Profile_pic:       "link.com",
+		Subscription_type: "Premium",
+		Token:             "123",
+		CreatedAt:         time.Now(),
+		UpdatedAt:         time.Now()},
 	}
 }
 
@@ -157,7 +172,7 @@ func TestLogin(t *testing.T) {
 	})
 
 	t.Run("Test Case 2 | Invalid Login - Username Empty", func(t *testing.T) {
-		_, err := userService.Register(context.Background(), users.Domain{
+		_, err := userService.Login(context.Background(), users.Domain{
 			Username: "",
 			Password: "abc123",
 		})
@@ -165,9 +180,45 @@ func TestLogin(t *testing.T) {
 	})
 
 	t.Run("Test Case 3 | Invalid Login - Password Empty", func(t *testing.T) {
-		_, err := userService.Register(context.Background(), users.Domain{
+		_, err := userService.Login(context.Background(), users.Domain{
 			Username: "adrian_sts",
 			Password: "",
+		})
+		assert.NotNil(t, err)
+	})
+
+}
+
+func TestGetUsers(t *testing.T) {
+	setup()
+	userRepository.On("GetUsers",
+		mock.Anything,
+	).Return(userlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetUsers", func(t *testing.T) {
+		_, err := userService.GetUsers(context.Background())
+		assert.Nil(t, err)
+	})
+
+}
+
+func TestGetUserById(t *testing.T) {
+	setup()
+	userRepository.On("GetUserById",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(userDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetUserById", func(t *testing.T) {
+		_, err := userService.GetUserById(context.Background(), users.Domain{
+			Id: 1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid GetUserById - No Id ", func(t *testing.T) {
+		_, err := userService.GetUserById(context.Background(), users.Domain{
+			Id: 0,
 		})
 		assert.NotNil(t, err)
 	})

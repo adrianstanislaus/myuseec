@@ -16,6 +16,7 @@ var albumRepository _mockAlbumRepository.Repository
 
 var albumService albums.Usecase
 var albumDomain albums.Domain
+var albumlistdomain []albums.Domain
 
 func setup() {
 	albumService = albums.NewAlbumUsecase(&albumRepository, time.Hour*1)
@@ -29,9 +30,20 @@ func setup() {
 		CreatedAt:    time.Now(),
 		UpdatedAt:    time.Now(),
 	}
+	albumlistdomain = []albums.Domain{
+		{
+			Id:           1,
+			Title:        "Nama Album",
+			Artist_id:    1,
+			Album_art:    "linkkegambaralbum.com",
+			Songs:        []songs.Domain{},
+			Release_date: time.Now(),
+			CreatedAt:    time.Now(),
+			UpdatedAt:    time.Now()},
+	}
 }
 
-func TestRegister(t *testing.T) {
+func TestAdd(t *testing.T) {
 	setup()
 	albumRepository.On("Add",
 		mock.Anything,
@@ -69,5 +81,39 @@ func TestRegister(t *testing.T) {
 			Release_date: time.Now(),
 		})
 		assert.NotNil(t, err)
+	})
+}
+
+func TestGetAlbums(t *testing.T) {
+	setup()
+	albumRepository.On("GetAlbums",
+		mock.Anything,
+	).Return(albumlistdomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetAlbums", func(t *testing.T) {
+		_, err := albumService.GetAlbums(context.Background())
+		assert.Nil(t, err)
+	})
+}
+
+func TestGetAlbumById(t *testing.T) {
+	setup()
+	albumRepository.On("GetAlbumById",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(albumDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetAlbumById", func(t *testing.T) {
+		_, err := albumService.GetAlbumById(context.Background(), albums.Domain{
+			Id: 1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid GetAlbumById - Id Empty", func(t *testing.T) {
+		_, err := albumService.GetAlbumById(context.Background(), albums.Domain{
+			Id: 0,
+		})
+		assert.Nil(t, err)
 	})
 }
