@@ -16,6 +16,7 @@ var playlistRepository _mockPlaylistRepository.Repository
 
 var playlistService playlists.Usecase
 var playlistDomain playlists.Domain
+var playlistlistDomain []playlists.Domain
 
 func setup() {
 	playlistService = playlists.NewPlaylistUsecase(&playlistRepository, time.Hour*1)
@@ -23,10 +24,19 @@ func setup() {
 		Id:          1,
 		Name:        "Judul Playlist",
 		Description: "Deskripsi playlist",
-		Songs:       []songs.Domain{},
+		Songs:       []songs.Domain{{Id: 1}},
 		Creator_id:  1,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
+	}
+	playlistlistDomain = []playlists.Domain{{
+		Id:          1,
+		Name:        "Judul Playlist",
+		Description: "Deskripsi playlist",
+		Songs:       []songs.Domain{},
+		Creator_id:  1,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now()},
 	}
 }
 
@@ -64,4 +74,103 @@ func TestCreate(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
+}
+
+func TestGetbyID(t *testing.T) {
+	setup()
+	playlistRepository.On("GetbyID",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(playlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetbyID", func(t *testing.T) {
+		_, err := playlistService.GetbyID(context.Background(), playlists.Domain{
+			Id: 1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid GetbyID - Id Empty", func(t *testing.T) {
+		_, err := playlistService.GetbyID(context.Background(), playlists.Domain{
+			Id: 0,
+		})
+		assert.NotNil(t, err)
+	})
+}
+
+func TestGetPlaylists(t *testing.T) {
+	setup()
+	playlistRepository.On("GetPlaylists",
+		mock.Anything,
+	).Return(playlistlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetPlaylists", func(t *testing.T) {
+		_, err := playlistService.GetPlaylists(context.Background())
+		assert.Nil(t, err)
+	})
+
+}
+
+func TestAddSong(t *testing.T) {
+	setup()
+	playlistRepository.On("AddSong",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(playlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid AddSong", func(t *testing.T) {
+		_, err := playlistService.AddSong(context.Background(), playlists.Domain{
+			Id:    1,
+			Songs: []songs.Domain{{Id: 1}},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid AddSong - Id Empty", func(t *testing.T) {
+		_, err := playlistService.AddSong(context.Background(), playlists.Domain{
+			Id:    0,
+			Songs: []songs.Domain{{Id: 1}},
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid AddSong - Songs Empty", func(t *testing.T) {
+		_, err := playlistService.AddSong(context.Background(), playlists.Domain{
+			Id:    1,
+			Songs: []songs.Domain{},
+		})
+		assert.NotNil(t, err)
+	})
+}
+
+func TestRemoveSong(t *testing.T) {
+	setup()
+	playlistRepository.On("RemoveSong",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(playlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid RemoveSong", func(t *testing.T) {
+		_, err := playlistService.RemoveSong(context.Background(), playlists.Domain{
+			Id:    1,
+			Songs: []songs.Domain{{Id: 1}},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid RemoveSong - Id Empty", func(t *testing.T) {
+		_, err := playlistService.RemoveSong(context.Background(), playlists.Domain{
+			Id:    0,
+			Songs: []songs.Domain{{Id: 1}},
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid RemoveSong - Songs Empty", func(t *testing.T) {
+		_, err := playlistService.RemoveSong(context.Background(), playlists.Domain{
+			Id:    1,
+			Songs: []songs.Domain{},
+		})
+		assert.NotNil(t, err)
+	})
 }

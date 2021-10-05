@@ -16,6 +16,7 @@ var songRepository _mockSongRepository.Repository
 
 var songService songs.Usecase
 var songDomain songs.Domain
+var songlistDomain []songs.Domain
 
 func setup() {
 	songService = songs.NewSongUsecase(&songRepository, time.Hour*1)
@@ -123,6 +124,42 @@ func TestGetSongById(t *testing.T) {
 
 	t.Run("Test Case 2 | Invalid GetSongById - No Id ", func(t *testing.T) {
 		_, err := songService.GetSongById(context.Background(), songs.Domain{
+			Id: 0,
+		})
+		assert.NotNil(t, err)
+	})
+
+}
+
+func TestGetSongs(t *testing.T) {
+	setup()
+	songRepository.On("GetSongs",
+		mock.Anything,
+	).Return(songlistDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetSongs", func(t *testing.T) {
+		_, err := songService.GetSongs(context.Background())
+		assert.Nil(t, err)
+	})
+
+}
+
+func TestGetSongLyrics(t *testing.T) {
+	setup()
+	songRepository.On("GetSongLyrics",
+		mock.Anything,
+		mock.AnythingOfType("Domain"),
+	).Return(songDomain, nil).Once()
+
+	t.Run("Test Case 1 | Valid GetSongLyrics", func(t *testing.T) {
+		_, err := songService.GetSongLyrics(context.Background(), songs.Domain{
+			Id: 1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid GetSongLyrics - No Id ", func(t *testing.T) {
+		_, err := songService.GetSongLyrics(context.Background(), songs.Domain{
 			Id: 0,
 		})
 		assert.NotNil(t, err)
