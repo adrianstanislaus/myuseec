@@ -114,6 +114,6 @@ func TestGetAlbumById(t *testing.T) {
 		_, err := albumService.GetAlbumById(context.Background(), albums.Domain{
 			Id: 0,
 		})
-		assert.Nil(t, err)
+		assert.NotNil(t, err)
 	})
 }
