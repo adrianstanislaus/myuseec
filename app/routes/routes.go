@@ -21,6 +21,7 @@ type ControllerList struct {
 }
 
 func (cl *ControllerList) RouteRegister(e *echo.Echo) {
+	e.Use(middleware.Logger())
 	e.POST("users/register", cl.UserController.Register)
 	e.POST("users/login", cl.UserController.Login)
 	e.GET("users", cl.UserController.GetUsers, middleware.JWTWithConfig(cl.JwtConfig))
