@@ -30,7 +30,7 @@ func (albumController AlbumController) Add(c echo.Context) error {
 	album, error := albumController.AlbumUseCase.Add(ctx, albumAdd.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(album))
@@ -67,7 +67,7 @@ func (albumController AlbumController) GetAlbumById(c echo.Context) error {
 	albumdomain, error := albumController.AlbumUseCase.GetAlbumById(ctx, albumByID.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToGetAlbumById(albumdomain))

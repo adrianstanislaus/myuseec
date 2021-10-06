@@ -30,7 +30,7 @@ func (userController UserController) Register(c echo.Context) error {
 	user, error := userController.UserUseCase.Register(ctx, userRegister.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToRegister(user))
@@ -45,7 +45,7 @@ func (userController UserController) Login(c echo.Context) error {
 	user, error := userController.UserUseCase.Login(ctx, userLogin.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToLogin(user))
@@ -81,7 +81,7 @@ func (userController UserController) GetUserById(c echo.Context) error {
 	userdomain, error := userController.UserUseCase.GetUserById(ctx, userById.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToGetUserById(userdomain))

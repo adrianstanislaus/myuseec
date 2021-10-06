@@ -30,7 +30,7 @@ func (artistController ArtistController) Register(c echo.Context) error {
 	artist, error := artistController.ArtistUseCase.Register(ctx, artistRegister.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(artist))
@@ -67,7 +67,7 @@ func (artistController ArtistController) GetArtistById(c echo.Context) error {
 	userdomain, error := artistController.ArtistUseCase.GetArtistById(ctx, artistById.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToGetArtistById(userdomain))
