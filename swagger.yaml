@@ -1,0 +1,649 @@
+openapi: 3.0.0
+info:
+  description: |
+    The documentation to myuseek API. A music directory.
+    github.com/adrianstanislaus/myuseek
+  version: "1.0.0"
+  title: Myuseek
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: 18118036@telecom.stei.itb.ac.id
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/adrianstanislaus/myuseek/1.0.0
+  - url: http://18.140.53.27
+  
+tags:
+  - name: album
+    description: Information and operations on album
+  - name: artist
+    description: Information and operations on artist
+  - name: user
+    description: Information and operations on user
+  - name: song
+    description: Information and operations about song
+  - name: playlist
+    description: Information and operations about playlist
+
+paths:
+  /albums:
+    get:
+      tags:
+        - album
+      summary: Get All Albums
+      operationId: GetAlbums
+      responses:
+        '200':
+          description: Operation Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Album'
+        '500':
+          description: internal server error
+  /albums/add:
+    post:
+      tags:
+        - album
+      summary: Add new album
+      description: Insert album details
+      operationId: AddAlbum
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Album'
+        description: Add album detail for the new album
+        required: true
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /album/{albumId}:
+    get:
+      tags:
+        - album
+      summary: Find Album detail by ID
+      operationId: GetAlbumById
+      parameters:
+        - name: {albumId}
+          in: path
+          description: album id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+        '400':
+          description: Invalid tag value
+        '500':
+          description: internal server error
+  /artists:
+    get:
+      tags:
+        - artist
+      summary: Get All Artists
+      operationId: GetArtists
+      responses:
+        '200':
+          description: Operation Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Artist'
+        '500':
+          description: internal server error
+  /artists/register:
+    post:
+      tags:
+        - artist
+      summary: Add new artist
+      description: Insert artist details
+      operationId: ArtistRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+        description: Add artist detail for the new artist
+        required: true
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /artists/{artistId}:
+    get:
+      tags:
+        - artist
+      summary: Find Artist detail by ID
+      operationId: GetArtistById
+      parameters:
+        - name: {artistId}
+          in: path
+          description: artist id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+          
+  /songs:
+    get:
+      tags:
+        - song
+      summary: Get All songs
+      operationId: GetAllSongs
+      responses:
+        '200':
+          description: Operation Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Song'
+        '500':
+          description: internal server error
+  /songs/add:
+    post:
+      tags:
+        - song
+      summary: Add new song
+      description: Insert song details
+      operationId: SongAdd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
+        description: Add song detail for the new song
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /songs/{songId}:
+    get:
+      tags:
+        - song
+      summary: Find song detail by ID
+      operationId: GetSongById
+      parameters:
+        - name: {songId}
+          in: path
+          description: song id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /songs/{songId}/lyrics:
+    get:
+      tags:
+        - song
+      summary: Find song lyrics by ID
+      operationId: GetSongLyricsById
+      parameters:
+        - name: {songId}
+          in: path
+          description: song id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  
+  /playlists:
+    get:
+      tags:
+        - playlist
+      summary: Get All playlist
+      operationId: GetAllPlaylists
+      responses:
+        '200':
+          description: Operation Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Playlist'
+        '500':
+          description: internal server error
+  /playlists/create:
+    post:
+      tags:
+        - playlist
+      summary: Add new playlist
+      description: Insert playlist details
+      operationId: PlaylistCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Playlist'
+        description: Add playlist detail for the new song
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /playlists/{playlistId}:
+    get:
+      tags:
+        - playlist
+      summary: Find playlist detail by ID
+      operationId: GetPlaylistById
+      parameters:
+        - name: {playlistId}
+          in: path
+          description: playlist id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /songs/{songId}/addsong:
+    post:
+      tags:
+        - playlist
+      summary: add song to playlist by song ID
+      operationId: AddSongToPlaylist
+      parameters:
+        - name: {playlistId}
+          in: path
+          description: playlist id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /playlists/{playlistId}/removesong:
+    post:
+      tags:
+        - playlist
+      summary: remove song to playlist by song ID
+      operationId: RemoveSongToPlaylist
+      parameters:
+        - name: {playlistId}
+          in: path
+          description: playlist id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get All users
+      operationId: GetAllUsers
+      responses:
+        '200':
+          description: Operation Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: internal server error
+  /users/Register:
+    post:
+      tags:
+        - user
+      summary: Add new user
+      description: Insert user details
+      operationId: userRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Add user detail for the new user
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      summary: Find user detail by ID
+      operationId: GetUserById
+      parameters:
+        - name: {userId}
+          in: path
+          description: user id
+          required: true
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+  /users/login:
+    post:
+      tags:
+        - user
+      summary: login as user
+      description: login as user using username and password
+      operationId: userLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Insert username and password for the new user
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid value
+        '500':
+          description: internal server error
+
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profile_pic:
+          type: string
+        profile_about:
+          type: string
+        subscription_type:
+          type: string
+      xml:
+        name: User
+    Album:
+      type: object
+      required:
+        - title
+        - artist_id
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          example: yesterday
+        artist_id:
+          type: integer
+          format: int64
+          example: 1
+        release_date:
+          type: string
+          format: date-time
+    Artist:
+      type: object
+      required:
+        - name
+        - about
+        - record_label
+        - profile_pic
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: The Beatles
+        about:
+          type: string
+          example: A london based band
+        record_label:
+          type: string
+        profile_pic:
+          type: string
+      xml:
+        name: Album
+    Song:
+      type: object
+      required:
+        - title
+        - artist_id
+        - album_id
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          example: Yesterday
+        artist_id:
+          type: integer
+          format: int64
+        artist: 
+          $ref: '#/components/schemas/Artist'
+        album_id:
+          type: integer
+          format: int64
+        genre:
+          type: string
+          example: Pop
+        duration:
+          type: string
+        lyrics:
+          type: string
+      xml:
+        name: Album
+    Playlist:
+      type: object
+      required:
+        - Name
+        - creator_id
+        - album_id
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: My Playlist
+        creator_id:
+          type: integer
+          format: int64
+        description:
+          type: string
+          example: A playlist for happy mood
+        songs:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Song'
+          
+      xml:
+        name: Album
+    ApiResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+            message:
+              type: string
+        data:
+          type: object
+  requestBodies:
+    Pet:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+      description: Pet object that needs to be added to the store
+      required: true
+    UserArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      description: List of user object
+      required: true
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+          scopes:
+            'write:pets': modify pets in your account
+            'read:pets': read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
