@@ -56,13 +56,13 @@ func (_m *Repository) GetAlbumById(ctx context.Context, domain albums.Domain) (a
 	return r0, r1
 }
 
-// GetAlbums provides a mock function with given fields: ctx
-func (_m *Repository) GetAlbums(ctx context.Context) ([]albums.Domain, error) {
-	ret := _m.Called(ctx)
+// GetAlbums provides a mock function with given fields: ctx, domain
+func (_m *Repository) GetAlbums(ctx context.Context, domain albums.Domain) ([]albums.Domain, error) {
+	ret := _m.Called(ctx, domain)
 
 	var r0 []albums.Domain
-	if rf, ok := ret.Get(0).(func(context.Context) []albums.Domain); ok {
-		r0 = rf(ctx)
+	if rf, ok := ret.Get(0).(func(context.Context, albums.Domain) []albums.Domain); ok {
+		r0 = rf(ctx, domain)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]albums.Domain)
@@ -70,8 +70,8 @@ func (_m *Repository) GetAlbums(ctx context.Context) ([]albums.Domain, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context) error); ok {
-		r1 = rf(ctx)
+	if rf, ok := ret.Get(1).(func(context.Context, albums.Domain) error); ok {
+		r1 = rf(ctx, domain)
 	} else {
 		r1 = ret.Error(1)
 	}

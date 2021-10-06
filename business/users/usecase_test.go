@@ -193,10 +193,11 @@ func TestGetUsers(t *testing.T) {
 	setup()
 	userRepository.On("GetUsers",
 		mock.Anything,
+		mock.AnythingOfType("Domain"),
 	).Return(userlistDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetUsers", func(t *testing.T) {
-		_, err := userService.GetUsers(context.Background())
+		_, err := userService.GetUsers(context.Background(), users.Domain{})
 		assert.Nil(t, err)
 	})
 

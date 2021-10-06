@@ -17,12 +17,12 @@ type Domain struct {
 
 type Usecase interface {
 	Register(ctx context.Context, domain Domain) (Domain, error)
-	GetArtists(ctx context.Context) ([]Domain, error)
+	GetArtists(ctx context.Context, domain Domain) ([]Domain, error)
 	GetArtistById(ctx context.Context, domain Domain) (Domain, error)
 }
 
 type Repository interface {
 	Register(ctx context.Context, domain Domain) (Domain, error)
-	GetArtists(ctx context.Context) ([]Domain, error)
+	GetArtists(ctx context.Context, domain Domain) ([]Domain, error)
 	GetArtistById(ctx context.Context, domain Domain) (Domain, error)
 }

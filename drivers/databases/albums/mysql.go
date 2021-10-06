@@ -41,9 +41,10 @@ func (rep *MysqlAlbumRepository) GetAlbumById(ctx context.Context, domain albums
 
 }
 
-func (rep *MysqlAlbumRepository) GetAlbums(ctx context.Context) ([]albums.Domain, error) {
+func (rep *MysqlAlbumRepository) GetAlbums(ctx context.Context, domain albums.Domain) ([]albums.Domain, error) {
 	albumlist := []Album{}
-	result := rep.Conn.Find(&albumlist)
+	search := "%" + domain.Title + "%"
+	result := rep.Conn.Where("title LIKE ?", search).Find(&albumlist)
 
 	if result.Error != nil {
 		albumlistdomain := []albums.Domain{}

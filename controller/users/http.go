@@ -52,9 +52,12 @@ func (userController UserController) Login(c echo.Context) error {
 }
 func (userController UserController) GetUsers(c echo.Context) error {
 	fmt.Println("GetUsers")
+	search := c.QueryParam("search")
+	userSearch := requests.UserSearch{}
+	userSearch.Username = search
 
 	ctx := c.Request().Context()
-	userlistdomain, error := userController.UserUseCase.GetUsers(ctx)
+	userlistdomain, error := userController.UserUseCase.GetUsers(ctx, userSearch.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

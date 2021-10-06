@@ -103,9 +103,9 @@ func (uc *PlaylistUsecase) RemoveSong(ctx context.Context, domain Domain) (Domai
 	return playlistdomain, nil
 }
 
-func (uc *PlaylistUsecase) GetPlaylists(ctx context.Context) ([]Domain, error) {
+func (uc *PlaylistUsecase) GetPlaylists(ctx context.Context, domain Domain) ([]Domain, error) {
 
-	playlistlistdomain, err := uc.Repo.GetPlaylists(ctx)
+	playlistlistdomain, err := uc.Repo.GetPlaylists(ctx, domain)
 
 	if err != nil {
 		return []Domain{}, err

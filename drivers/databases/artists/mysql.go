@@ -28,9 +28,10 @@ func (rep *MysqlArtistRepository) Register(ctx context.Context, domain artists.D
 	return artistDB.ToDomain(), nil
 }
 
-func (rep *MysqlArtistRepository) GetArtists(ctx context.Context) ([]artists.Domain, error) {
+func (rep *MysqlArtistRepository) GetArtists(ctx context.Context, domain artists.Domain) ([]artists.Domain, error) {
 	artistlist := []Artist{}
-	result := rep.Conn.Find(&artistlist)
+	search := "%" + domain.Name + "%"
+	result := rep.Conn.Where("name LIKE ?", search).Find(&artistlist)
 
 	if result.Error != nil {
 		artistlistdomain := []artists.Domain{}

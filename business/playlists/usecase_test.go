@@ -105,7 +105,7 @@ func TestGetPlaylists(t *testing.T) {
 	).Return(playlistlistDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetPlaylists", func(t *testing.T) {
-		_, err := playlistService.GetPlaylists(context.Background())
+		_, err := playlistService.GetPlaylists(context.Background(), playlists.Domain{})
 		assert.Nil(t, err)
 	})
 

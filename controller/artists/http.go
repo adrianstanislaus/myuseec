@@ -38,9 +38,12 @@ func (artistController ArtistController) Register(c echo.Context) error {
 
 func (artistController ArtistController) GetArtists(c echo.Context) error {
 	fmt.Println("GetArtists")
+	search := c.QueryParam("search")
+	artistSearch := requests.ArtistSearch{}
+	artistSearch.Name = search
 
 	ctx := c.Request().Context()
-	artistlistdomain, error := artistController.ArtistUseCase.GetArtists(ctx)
+	artistlistdomain, error := artistController.ArtistUseCase.GetArtists(ctx, artistSearch.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

@@ -94,9 +94,9 @@ func (uc *UserUsecase) Login(ctx context.Context, domain Domain) (Domain, error)
 	return user, nil
 }
 
-func (uc *UserUsecase) GetUsers(ctx context.Context) ([]Domain, error) {
+func (uc *UserUsecase) GetUsers(ctx context.Context, domain Domain) ([]Domain, error) {
 
-	userlistdomain, err := uc.Repo.GetUsers(ctx)
+	userlistdomain, err := uc.Repo.GetUsers(ctx, domain)
 
 	if err != nil {
 		return []Domain{}, err

@@ -20,11 +20,11 @@ type Domain struct {
 type Usecase interface {
 	Add(ctx context.Context, domain Domain) (Domain, error)
 	GetAlbumById(ctx context.Context, domain Domain) (Domain, error)
-	GetAlbums(ctx context.Context) ([]Domain, error)
+	GetAlbums(ctx context.Context, domain Domain) ([]Domain, error)
 }
 
 type Repository interface {
 	Add(ctx context.Context, domain Domain) (Domain, error)
 	GetAlbumById(ctx context.Context, domain Domain) (Domain, error)
-	GetAlbums(ctx context.Context) ([]Domain, error)
+	GetAlbums(ctx context.Context, domain Domain) ([]Domain, error)
 }
