@@ -84,7 +84,7 @@ paths:
       summary: Find Album detail by ID
       operationId: GetAlbumById
       parameters:
-        - name: {albumId}
+        - name: albumid
           in: path
           description: album id
           required: true
@@ -152,7 +152,7 @@ paths:
       summary: Find Artist detail by ID
       operationId: GetArtistById
       parameters:
-        - name: {artistId}
+        - name: artistid
           in: path
           description: artist id
           required: true
@@ -220,7 +220,7 @@ paths:
       summary: Find song detail by ID
       operationId: GetSongById
       parameters:
-        - name: {songId}
+        - name: songId
           in: path
           description: song id
           required: true
@@ -245,7 +245,7 @@ paths:
       summary: Find song lyrics by ID
       operationId: GetSongLyricsById
       parameters:
-        - name: {songId}
+        - name: songId
           in: path
           description: song id
           required: true
@@ -313,7 +313,7 @@ paths:
       summary: Find playlist detail by ID
       operationId: GetPlaylistById
       parameters:
-        - name: {playlistId}
+        - name: playlistId
           in: path
           description: playlist id
           required: true
@@ -338,7 +338,7 @@ paths:
       summary: add song to playlist by song ID
       operationId: AddSongToPlaylist
       parameters:
-        - name: {playlistId}
+        - name: playlistId
           in: path
           description: playlist id
           required: true
@@ -363,7 +363,7 @@ paths:
       summary: remove song to playlist by song ID
       operationId: RemoveSongToPlaylist
       parameters:
-        - name: {playlistId}
+        - name: playlistId
           in: path
           description: playlist id
           required: true
@@ -430,7 +430,7 @@ paths:
       summary: Find user detail by ID
       operationId: GetUserById
       parameters:
-        - name: {userId}
+        - name: userId
           in: path
           description: user id
           required: true
