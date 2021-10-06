@@ -30,7 +30,7 @@ func (songController SongController) Add(c echo.Context) error {
 	song, error := songController.SongUseCase.Add(ctx, songAdd.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(song))
@@ -67,7 +67,7 @@ func (songController SongController) GetSongById(c echo.Context) error {
 	songdomain, error := songController.SongUseCase.GetSongById(ctx, songByID.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToGetSongById(songdomain))
@@ -88,7 +88,7 @@ func (songController SongController) GetSongLyrics(c echo.Context) error {
 	songdomain, error := songController.SongUseCase.GetSongLyrics(ctx, songByID.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToGetSongLyrics(songdomain))

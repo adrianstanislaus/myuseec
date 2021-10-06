@@ -31,7 +31,7 @@ func (playlistController PlaylistController) Create(c echo.Context) error {
 	playlist, error := playlistController.PlaylistUseCase.Create(ctx, playlistCreate.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToCreatePlaylist(playlist))
@@ -55,7 +55,7 @@ func (playlistController PlaylistController) AddSong(c echo.Context) error {
 	playlistdomain, error := playlistController.PlaylistUseCase.AddSong(ctx, songtoadd.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToAddSong(playlistdomain))
@@ -79,7 +79,7 @@ func (playlistController PlaylistController) RemoveSong(c echo.Context) error {
 	playlistdomain, error := playlistController.PlaylistUseCase.RemoveSong(ctx, songtoremove.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomainToRemoveSong(playlistdomain))
@@ -100,7 +100,7 @@ func (playlistController PlaylistController) GetbyID(c echo.Context) error {
 	playlistdomain, error := playlistController.PlaylistUseCase.GetbyID(ctx, playlistByID.ToDomain())
 
 	if error != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(playlistdomain))
