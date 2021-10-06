@@ -38,9 +38,10 @@ func (rep *MysqlSongRepository) Add(ctx context.Context, domain songs.Domain) (s
 	return songDB.ToDomain(), nil
 }
 
-func (rep *MysqlSongRepository) GetSongs(ctx context.Context) ([]songs.Domain, error) {
+func (rep *MysqlSongRepository) GetSongs(ctx context.Context, domain songs.Domain) ([]songs.Domain, error) {
 	songlist := []Song{}
-	result := rep.Conn.Find(&songlist)
+	titlesearch := "%" + domain.Title + "%"
+	result := rep.Conn.Where("Title LIKE ?", titlesearch).Find(&songlist)
 	songlistwithArtist := []Song{}
 
 	for _, song := range songlist {

@@ -56,13 +56,13 @@ func (_m *Repository) Create(ctx context.Context, domain playlists.Domain) (play
 	return r0, r1
 }
 
-// GetPlaylists provides a mock function with given fields: ctx
-func (_m *Repository) GetPlaylists(ctx context.Context) ([]playlists.Domain, error) {
-	ret := _m.Called(ctx)
+// GetPlaylists provides a mock function with given fields: ctx, domain
+func (_m *Repository) GetPlaylists(ctx context.Context, domain playlists.Domain) ([]playlists.Domain, error) {
+	ret := _m.Called(ctx, domain)
 
 	var r0 []playlists.Domain
-	if rf, ok := ret.Get(0).(func(context.Context) []playlists.Domain); ok {
-		r0 = rf(ctx)
+	if rf, ok := ret.Get(0).(func(context.Context, playlists.Domain) []playlists.Domain); ok {
+		r0 = rf(ctx, domain)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]playlists.Domain)
@@ -70,8 +70,8 @@ func (_m *Repository) GetPlaylists(ctx context.Context) ([]playlists.Domain, err
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context) error); ok {
-		r1 = rf(ctx)
+	if rf, ok := ret.Get(1).(func(context.Context, playlists.Domain) error); ok {
+		r1 = rf(ctx, domain)
 	} else {
 		r1 = ret.Error(1)
 	}

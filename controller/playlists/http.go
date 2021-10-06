@@ -108,9 +108,12 @@ func (playlistController PlaylistController) GetbyID(c echo.Context) error {
 
 func (playlistController PlaylistController) GetPlaylists(c echo.Context) error {
 	fmt.Println("GetPlaylists")
+	search := c.QueryParam("search")
+	playlistSearch := requests.PlaylistSearch{}
+	playlistSearch.Name = search
 
 	ctx := c.Request().Context()
-	playlistlistdomain, error := playlistController.PlaylistUseCase.GetPlaylists(ctx)
+	playlistlistdomain, error := playlistController.PlaylistUseCase.GetPlaylists(ctx, playlistSearch.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

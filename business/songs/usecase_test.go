@@ -135,10 +135,13 @@ func TestGetSongs(t *testing.T) {
 	setup()
 	songRepository.On("GetSongs",
 		mock.Anything,
+		mock.AnythingOfType("Domain"),
 	).Return(songlistDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetSongs", func(t *testing.T) {
-		_, err := songService.GetSongs(context.Background())
+		_, err := songService.GetSongs(context.Background(), songs.Domain{
+			Title: "",
+		})
 		assert.Nil(t, err)
 	})
 

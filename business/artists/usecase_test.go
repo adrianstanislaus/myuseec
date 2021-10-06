@@ -102,10 +102,11 @@ func TestGetArtists(t *testing.T) {
 	setup()
 	artistRepository.On("GetArtists",
 		mock.Anything,
+		mock.AnythingOfType("Domain"),
 	).Return(artistlistDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetArtists", func(t *testing.T) {
-		_, err := artistService.GetArtists(context.Background())
+		_, err := artistService.GetArtists(context.Background(), artists.Domain{})
 		assert.Nil(t, err)
 	})
 

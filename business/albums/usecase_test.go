@@ -91,7 +91,7 @@ func TestGetAlbums(t *testing.T) {
 	).Return(albumlistdomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetAlbums", func(t *testing.T) {
-		_, err := albumService.GetAlbums(context.Background())
+		_, err := albumService.GetAlbums(context.Background(), albums.Domain{})
 		assert.Nil(t, err)
 	})
 }
