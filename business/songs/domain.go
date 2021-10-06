@@ -23,12 +23,12 @@ type Usecase interface {
 	Add(ctx context.Context, domain Domain) (Domain, error)
 	GetSongById(ctx context.Context, domain Domain) (Domain, error)
 	GetSongLyrics(ctx context.Context, domain Domain) (Domain, error)
-	GetSongs(ctx context.Context) ([]Domain, error)
+	GetSongs(ctx context.Context, domain Domain) ([]Domain, error)
 }
 
 type Repository interface {
 	Add(ctx context.Context, domain Domain) (Domain, error)
 	GetSongById(ctx context.Context, domain Domain) (Domain, error)
 	GetSongLyrics(ctx context.Context, domain Domain) (Domain, error)
-	GetSongs(ctx context.Context) ([]Domain, error)
+	GetSongs(ctx context.Context, domain Domain) ([]Domain, error)
 }

@@ -37,9 +37,9 @@ func (uc *AlbumUsecase) Add(ctx context.Context, domain Domain) (Domain, error) 
 	return album, nil
 }
 
-func (uc *AlbumUsecase) GetAlbums(ctx context.Context) ([]Domain, error) {
+func (uc *AlbumUsecase) GetAlbums(ctx context.Context, domain Domain) ([]Domain, error) {
 
-	albumlistdomain, err := uc.Repo.GetAlbums(ctx)
+	albumlistdomain, err := uc.Repo.GetAlbums(ctx, domain)
 
 	if err != nil {
 		return []Domain{}, err

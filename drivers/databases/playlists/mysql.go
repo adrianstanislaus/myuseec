@@ -100,9 +100,10 @@ func (rep *MysqlPlaylistRepository) RemoveSong(ctx context.Context, domain playl
 
 }
 
-func (rep *MysqlPlaylistRepository) GetPlaylists(ctx context.Context) ([]playlists.Domain, error) {
+func (rep *MysqlPlaylistRepository) GetPlaylists(ctx context.Context, domain playlists.Domain) ([]playlists.Domain, error) {
 	playlistlist := []Playlist{}
-	result := rep.Conn.Find(&playlistlist)
+	search := "%" + domain.Name + "%"
+	result := rep.Conn.Where("name LIKE ?", search).Find(&playlistlist)
 
 	if result.Error != nil {
 		playlistlistdomain := []playlists.Domain{}

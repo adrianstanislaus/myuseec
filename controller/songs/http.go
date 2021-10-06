@@ -38,9 +38,12 @@ func (songController SongController) Add(c echo.Context) error {
 
 func (songController SongController) GetSongs(c echo.Context) error {
 	fmt.Println("GetSongs")
+	search := c.QueryParam("search")
+	songSearch := requests.SongSearch{}
+	songSearch.Title = search
 
 	ctx := c.Request().Context()
-	songlistdomain, error := songController.SongUseCase.GetSongs(ctx)
+	songlistdomain, error := songController.SongUseCase.GetSongs(ctx, songSearch.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

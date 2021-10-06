@@ -35,13 +35,13 @@ func (_m *Repository) GetUserById(ctx context.Context, domain users.Domain) (use
 	return r0, r1
 }
 
-// GetUsers provides a mock function with given fields: ctx
-func (_m *Repository) GetUsers(ctx context.Context) ([]users.Domain, error) {
-	ret := _m.Called(ctx)
+// GetUsers provides a mock function with given fields: ctx, domain
+func (_m *Repository) GetUsers(ctx context.Context, domain users.Domain) ([]users.Domain, error) {
+	ret := _m.Called(ctx, domain)
 
 	var r0 []users.Domain
-	if rf, ok := ret.Get(0).(func(context.Context) []users.Domain); ok {
-		r0 = rf(ctx)
+	if rf, ok := ret.Get(0).(func(context.Context, users.Domain) []users.Domain); ok {
+		r0 = rf(ctx, domain)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]users.Domain)
@@ -49,8 +49,8 @@ func (_m *Repository) GetUsers(ctx context.Context) ([]users.Domain, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context) error); ok {
-		r1 = rf(ctx)
+	if rf, ok := ret.Get(1).(func(context.Context, users.Domain) error); ok {
+		r1 = rf(ctx, domain)
 	} else {
 		r1 = ret.Error(1)
 	}

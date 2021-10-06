@@ -45,9 +45,9 @@ func (uc *ArtistUsecase) Register(ctx context.Context, domain Domain) (Domain, e
 	return artist, nil
 }
 
-func (uc *ArtistUsecase) GetArtists(ctx context.Context) ([]Domain, error) {
+func (uc *ArtistUsecase) GetArtists(ctx context.Context, domain Domain) ([]Domain, error) {
 
-	artistlistdomain, err := uc.Repo.GetArtists(ctx)
+	artistlistdomain, err := uc.Repo.GetArtists(ctx, domain)
 
 	if err != nil {
 		return []Domain{}, err

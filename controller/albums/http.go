@@ -38,9 +38,12 @@ func (albumController AlbumController) Add(c echo.Context) error {
 
 func (albumController AlbumController) GetAlbums(c echo.Context) error {
 	fmt.Println("Get Albums")
+	search := c.QueryParam("search")
+	albumSearch := requests.AlbumSearch{}
+	albumSearch.Title = search
 
 	ctx := c.Request().Context()
-	albumlistdomain, error := albumController.AlbumUseCase.GetAlbums(ctx)
+	albumlistdomain, error := albumController.AlbumUseCase.GetAlbums(ctx, albumSearch.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

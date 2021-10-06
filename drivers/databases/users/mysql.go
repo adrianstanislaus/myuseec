@@ -49,9 +49,10 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, username, password st
 
 }
 
-func (rep *MysqlUserRepository) GetUsers(ctx context.Context) ([]users.Domain, error) {
+func (rep *MysqlUserRepository) GetUsers(ctx context.Context, domain users.Domain) ([]users.Domain, error) {
 	userlist := []Users{}
-	result := rep.Conn.Find(&userlist)
+	search := "%" + domain.Username + "%"
+	result := rep.Conn.Where("username LIKE ? OR first_name LIKE ? OR last_name LIKE ?", search, search, search).Find(&userlist)
 
 	if result.Error != nil {
 		userlistdomain := []users.Domain{}

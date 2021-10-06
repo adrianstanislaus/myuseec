@@ -45,9 +45,8 @@ func (uc *SongUsecase) Add(ctx context.Context, domain Domain) (Domain, error) {
 	return song, nil
 }
 
-func (uc *SongUsecase) GetSongs(ctx context.Context) ([]Domain, error) {
-
-	songlistdomain, err := uc.Repo.GetSongs(ctx)
+func (uc *SongUsecase) GetSongs(ctx context.Context, domain Domain) ([]Domain, error) {
+	songlistdomain, err := uc.Repo.GetSongs(ctx, domain)
 
 	if err != nil {
 		return []Domain{}, err
