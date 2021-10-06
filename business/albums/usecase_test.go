@@ -88,6 +88,7 @@ func TestGetAlbums(t *testing.T) {
 	setup()
 	albumRepository.On("GetAlbums",
 		mock.Anything,
+		mock.AnythingOfType("Domain"),
 	).Return(albumlistdomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetAlbums", func(t *testing.T) {

@@ -102,6 +102,7 @@ func TestGetPlaylists(t *testing.T) {
 	setup()
 	playlistRepository.On("GetPlaylists",
 		mock.Anything,
+		mock.AnythingOfType("Domain"),
 	).Return(playlistlistDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid GetPlaylists", func(t *testing.T) {
