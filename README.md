@@ -6,6 +6,7 @@ Library and Framworks used in this project:
 - JWT (for authentication)
 - Viper
 - Echo
+- GORM
 - Bcrypt (for password hashing)
 - lyrics.ovh (Third Party API for lyrics)
 - logger (default middleware logger)
